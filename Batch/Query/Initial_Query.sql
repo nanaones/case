@@ -1,8 +1,9 @@
+-- ----------------------------------------------------
 -- 회사이름
 CREATE TABLE public."WANT_COMP_NAME_TB"
 (
     "COMP_NAME_ID" serial NOT NULL,
-    "COMP_NAME_NM" character varying(80),
+    "COMP_NAME_NM" character varying(80) NOT NULL,
     PRIMARY KEY ("COMP_NAME_ID")
 )
 WITH (
@@ -11,73 +12,106 @@ WITH (
 
 ALTER TABLE public."WANT_COMP_NAME_TB"
     OWNER to postgres;
--- ----------------------------------------------------
--- 회사이름 MAPPED
 
-CREATE TABLE public."WANT_MAPPED_COMP_NAME_TB"
+-- ----------------------------------------------------
+-- 회사 CAT
+
+CREATE TABLE public."WANT_COMP_CAT_TB"
 (
-    "MAPPED_COMP_NAME_ID" serial NOT NULL,
-    "COMP_NAME_ID" integer NOT NULL,    
-    "MAPPED_COMP_NAME_NM" character varying(80),
-    PRIMARY KEY ("MAPPED_COMP_NAME_ID"),
-    FOREIGN KEY ("COMP_NAME_ID") REFERENCES public."WANT_COMP_NAME_TB"("COMP_NAME_ID")
+    "COMP_CAT_ID" serial NOT NULL,
+    "COMP_NAME_NM" character varying(80) NOT NULL,    
+    PRIMARY KEY ("COMP_CAT_ID")
 )
 WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public."WANT_COMP_NAME_TB"
+ALTER TABLE public."WANT_COMP_CAT_TB"
     OWNER to postgres;
 
 -- ----------------------------------------------------
--- TAG
-CREATE TABLE public."WANT_TAG_TB"
+-- 회사이름 N CAT 
+CREATE TABLE public."WANT_COMP_NAME_CAT_TB"
 (
-    "TAG_ID" serial NOT NULL,
-    "TAG_NM" character varying(80),
-    PRIMARY KEY ("TAG_ID")
+    "COMP_NAME_CAT_ID" serial NOT NULL,
+    "COMP_NAME_ID" integer NOT NULL,
+    "COMP_CAT_ID" integer NOT NULL,
+
+    PRIMARY KEY ("COMP_NAME_CAT_ID"),
+    FOREIGN KEY ("COMP_NAME_ID") REFERENCES public."WANT_COMP_NAME_TB"("COMP_NAME_ID"),
+    FOREIGN KEY ("COMP_CAT_ID") REFERENCES public."WANT_COMP_CAT_TB"("COMP_CAT_ID")
 )
 WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public."WANT_TAG_TB"
+ALTER TABLE public."WANT_COMP_NAME_CAT_TB"
+    OWNER to postgres;
+-- ----------------------------------------------------
+-- TAG
+CREATE TABLE public."WANT_TAG_NAME_TB"
+(
+    "TAG_NAME_ID" serial NOT NULL,
+    "TAG_NAME_NM" character varying(80) NOT NULL,
+    PRIMARY KEY ("TAG_NAME_ID")
+)
+WITH (
+    OIDS = FALSE
+);
+
+ALTER TABLE public."WANT_TAG_NAME_TB"
+    OWNER to postgres;
+-- ----------------------------------------------------
+-- TAG CAT
+CREATE TABLE public."WANT_TAG_CAT_TB"
+(
+    "TAG_CAT_ID" serial NOT NULL,
+    "TAG_CAT_NM" character varying(80) NOT NULL,
+    PRIMARY KEY ("TAG_CAT_ID")
+)
+WITH (
+    OIDS = FALSE
+);
+
+ALTER TABLE public."WANT_TAG_CAT_TB"
     OWNER to postgres;
 
 -- -----------------------------------------------------
 --  TAG MAPPED
-CREATE TABLE public."WANT_MAPPED_TAG_TB"
+CREATE TABLE public."WANT_TAG_NAME_CAT_TB"
 (
-    "MAPPED_TAG_ID" serial NOT NULL,
-    "TAG_ID" integer NOT NULL,    
-    "MAPPED_TAG_NM" character varying(80),
-    PRIMARY KEY ("MAPPED_TAG_ID"),
-    FOREIGN KEY ("TAG_ID") REFERENCES public."WANT_TAG_TB"("TAG_ID")
+    "TAG_NAME_CAT_ID" serial NOT NULL,
+    "TAG_NAME_ID" integer NOT NULL,    
+    "TAG_CAT_ID" integer NOT NULL,
+
+    PRIMARY KEY ("TAG_NAME_CAT_ID"),
+    FOREIGN KEY ("TAG_NAME_ID") REFERENCES public."WANT_TAG_NAME_TB"("TAG_NAME_ID"),
+    FOREIGN KEY ("TAG_CAT_ID") REFERENCES public."WANT_TAG_CAT_TB"("TAG_CAT_ID")
 )
 WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public."WANT_TAG_TB"
+ALTER TABLE public."WANT_TAG_NAME_CAT_TB"
     OWNER to postgres;
 
 -- -----------------------------------------------------
 -- MAPPING TABLE
-CREATE TABLE public."WANT_COMP_N_TAG_TB"
+CREATE TABLE public."WANT_MAPPED_TB"
 (
-    "COMP_N_TAG_ID" serial NOT NULL,
-    "COMP_TAG_ID" integer,
-    "COMP_NAME_ID" integer,
-    PRIMARY KEY ("COMP_N_TAG_ID"),
-    FOREIGN KEY ("COMP_NAME_ID") REFERENCES public."WANT_COMP_NAME_TB"("COMP_NAME_ID"),
-    FOREIGN KEY ("COMP_TAG_ID") REFERENCES public."WANT_TAG_TB"("TAG_ID")
+    "MAPPED_TB_ID" serial NOT NULL,
+    "COMP_CAT_ID" integer,
+    "TAG_CAT_ID" integer,
+    PRIMARY KEY ("MAPPED_TB_ID"),
+    FOREIGN KEY ("COMP_CAT_ID") REFERENCES public."WANT_COMP_CAT_TB"("COMP_CAT_ID"),
+    FOREIGN KEY ("TAG_CAT_ID") REFERENCES public."WANT_TAG_CAT_TB"("TAG_CAT_ID")
     
 )
 WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public."WANT_COMP_NAME_TB"
+ALTER TABLE public."WANT_MAPPED_TB"
     OWNER to postgres;
 
 
