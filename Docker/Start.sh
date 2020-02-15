@@ -10,5 +10,5 @@ python3 -m pip install -r requirements.txt &&\
 gunicorn --access-logfile  &&\
          /log/logaccess_log --error-logfile &&\
          /log/error_log -b 0.0.0.0:5000  &&\
-         main:app  &&\
+         app:app  &&\
          -w 2 --thread 4 -k gevent &

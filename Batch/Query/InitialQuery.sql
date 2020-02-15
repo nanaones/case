@@ -10,9 +10,6 @@ WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public."WANT_COMP_NAME_TB"
-    OWNER to postgres;
-
 -- ----------------------------------------------------
 -- 회사 CAT
 
@@ -25,9 +22,6 @@ CREATE TABLE public."WANT_COMP_CAT_TB"
 WITH (
     OIDS = FALSE
 );
-
-ALTER TABLE public."WANT_COMP_CAT_TB"
-    OWNER to postgres;
 
 -- ----------------------------------------------------
 -- 회사이름 N CAT 
@@ -45,8 +39,6 @@ WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public."WANT_COMP_NAME_CAT_TB"
-    OWNER to postgres;
 -- ----------------------------------------------------
 -- TAG
 CREATE TABLE public."WANT_TAG_NAME_TB"
@@ -58,9 +50,6 @@ CREATE TABLE public."WANT_TAG_NAME_TB"
 WITH (
     OIDS = FALSE
 );
-
-ALTER TABLE public."WANT_TAG_NAME_TB"
-    OWNER to postgres;
 -- ----------------------------------------------------
 -- TAG CAT
 CREATE TABLE public."WANT_TAG_CAT_TB"
@@ -72,10 +61,6 @@ CREATE TABLE public."WANT_TAG_CAT_TB"
 WITH (
     OIDS = FALSE
 );
-
-ALTER TABLE public."WANT_TAG_CAT_TB"
-    OWNER to postgres;
-
 -- -----------------------------------------------------
 --  TAG MAPPED
 CREATE TABLE public."WANT_TAG_NAME_CAT_TB"
@@ -91,9 +76,6 @@ CREATE TABLE public."WANT_TAG_NAME_CAT_TB"
 WITH (
     OIDS = FALSE
 );
-
-ALTER TABLE public."WANT_TAG_NAME_CAT_TB"
-    OWNER to postgres;
 
 -- -----------------------------------------------------
 -- MAPPING TABLE
@@ -111,9 +93,11 @@ WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public."WANT_MAPPED_TB"
-    OWNER to postgres;
-
-
-
+ALTER TABLE public."WANT_COMP_NAME_TB" OWNER to postgres;
+ALTER TABLE public."WANT_COMP_CAT_TB" OWNER to postgres;
+ALTER TABLE public."WANT_COMP_NAME_CAT_TB" OWNER to postgres;
+ALTER TABLE public."WANT_TAG_NAME_TB" OWNER to postgres;
+ALTER TABLE public."WANT_TAG_CAT_TB" OWNER to postgres;
+ALTER TABLE public."WANT_TAG_NAME_CAT_TB" OWNER to postgres;
+ALTER TABLE public."WANT_MAPPED_TB" OWNER to postgres;
 

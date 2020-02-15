@@ -5,3 +5,5 @@ pandas
 gunicorn
 gunicorn[gevent]
 psycopg2-binary
+flask-cors
+
