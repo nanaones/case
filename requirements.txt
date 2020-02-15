@@ -1,0 +1,9 @@
+python_version >= "3.7"
+flask
+sqlalchemy
+pandas
+gunicorn
+gunicorn[gevent]
+psycopg2-binary
+flask-cors
+

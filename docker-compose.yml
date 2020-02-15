@@ -1,0 +1,63 @@
+version: "3"
+services:
+  db-prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - log-check
+
+  db-grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "13000:3000"
+    networks:
+      - log-check
+
+  db-postgres:
+    image: postgres:12.1-alpine
+    restart: always
+    volumes:
+      - ./Batch/Query/InitialQuery.sql:/docker-entrypoint-initdb.d/query.sql
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_PORT=5432
+    ports:
+      - "5432:5432"
+    networks:
+      - log-check
+
+  db-postgres-exporter:
+    image: wrouesnel/postgres_exporter:latest
+    restart: always
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:1234@db-postgres:5432/postgres?sslmode=disable
+    ports:
+      - "9187:9187"
+    networks:
+      - log-check
+
+  python-main:
+     build:
+       context: .
+       dockerfile: ./Docker/Docker
+    volumes:
+      - ./log:/logs
+      - ./Config:/config
+    depends_on:
+      - db-postgres
+    environment:
+      DATABASEURI: postgresql://postgres:1234@db-postgres:5432/postgres?sslmode=disable
+      DBMS_PORT: 5432
+      DBMS_ADDRESS: db-postgres
+      IS_STAND_ALONE: "false"
+    networks:
+      - log-check
+
+networks:
+  log-check:
