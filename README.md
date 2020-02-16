@@ -25,7 +25,6 @@ $ gunicorn --access-logfile ./log/logaccess_log --error-logfile ./log/error_log 
 * docker-compose
 
 ```shell script
-
 $ docker-compose up --build
 
 ```
