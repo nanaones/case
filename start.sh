@@ -1,13 +1,9 @@
 #! /bin/bash
 
-echo $DBMS_ADDRESS &&\
-echo $DBMS_PORT &&\
-apt update && apt install -y git python3.7 python3-pip locales&&\
 export LANGUAGE=ko_KR.UTF-8 &&\
 export LANG=ko_KR.UTF-8 &&\
-git clone http://github.com/nanaones/case &&\
-cd  ./case &&\
-python3.7 -m pip install -r requirements.txt &&\
+pip3 install -r requirements.txt &&\
+./CheckStandAlone.sh &&\
 python3 init.py &&\
 gunicorn --access-logfile  &&\
          /log/logaccess_log --error-logfile &&\
