@@ -49,6 +49,7 @@ services:
     volumes:
       - ./log:/logs
       - ./Config:/config
+      - ./Docker:/start
     depends_on:
       - db-postgres
     ports:
@@ -57,7 +58,7 @@ services:
       DATABASEURI: postgresql://postgres:1234@db-postgres:5432/postgres?sslmode=disable
       DBMS_PORT: 5432
       DBMS_ADDRESS: db-postgres
-      IS_STAND_ALONE: "false"
+      IS_STAND_ALONE: "False"
     networks:
       - log-check
 
