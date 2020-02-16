@@ -2,7 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 from app import db
 
 
-
 class CompanyName(db.Model):
     __tablename__ = 'WANT_COMP_NAME_TB'
     comp_name_id = db.Column('COMP_NAME_ID', db.Integer, primary_key=True)
@@ -51,7 +50,7 @@ class TagCat(db.Model):
     __tablename__ = 'WANT_TAG_CAT_TB'
     tag_cat_id = db.Column('TAG_CAT_ID', db.Integer, primary_key=True)
     tag_cat_nm = db.Column("TAG_CAT_NM", db.String(80))
-    
+
     def __init__(self,tag_cat_id, tag_cat_nm):
         self.tag_cat_id = tag_cat_id
         self.tag_cat_nm = tag_cat_nm
@@ -74,7 +73,8 @@ class Mapped(db.Model):
     comp_cat_id = db.Column("COMP_CAT_ID", db.ForeignKey("WANT_COMP_CAT_TB.COMP_CAT_ID"))
     tag_cat_id = db.Column("TAG_CAT_ID", db.ForeignKey("WANT_TAG_CAT_TB.TAG_CAT_ID"))
     
-    def __init__(self, comp_cat_id, tag_cat_id ):
+    def __init__(self, comp_cat_id, tag_cat_id):
+        self.mapped_tb_id
         self.comp_cat_id = comp_cat_id
         self.tag_cat_id = tag_cat_id
         
@@ -128,23 +128,30 @@ class Query:
     @staticmethod
     def search_tag_cat_name_by_comp_cat_id(comp_cat_id: int):
         """
-        입력받은 comp_cat_id 를 기준으로 tag_cat List를 반환
+        입력받은 comp_cat_id 를 기준으로 comp_cat_id 가 같은 List를 반환
         """
         return Mapped.query.filter_by(comp_cat_id=comp_cat_id).all()
 
     @staticmethod
     def search_tag_id_by_tag_cat_id(tag_cat_id: int):
         """
-        입력받은 tag_cat_id 를 기준으로 tag_name_id List를 반환
+        입력받은 tag_cat_id 를 기준으로 tag_name_id 가 입력받은 tag_cat_id와 같은 List를 반환
         """
         return TagNameCat.query.filter_by(tag_cat_id=tag_cat_id).all()
 
     @staticmethod
     def search_tag_name_by_tag_id(tag_name_id: int):
         """
-        입력받은 tag_name_id 를 기준으로 tag_name List를 반환
+        입력받은 tag_name_id 를 기준으로 tag_name 반환
         """
         return TagName.query.filter_by(tag_name_id=tag_name_id).first().tag_name_nm
+
+    @staticmethod
+    def search_comp_name_by_comp_name_id(comp_name_id: int):
+        """
+        입력받은 tag_name_id 를 기준으로 tag_name 반환
+        """
+        return CompanyName.query.filter_by(comp_name_id=comp_name_id).first().comp_name_nm
 
     @staticmethod
     def get_comp_name_by_comp_name(_comp_name: str):
@@ -160,7 +167,6 @@ class Query:
         """
 
         _ret = []
-
         _tag_id = Query.search_tag_id_by_tag_name(_tag_name_string)
         _tag_cat_id = Query.search_tag_cat_id_by_tag_name_id(_tag_id)
         _comp_list = Query.search_company_cat_by_tag_cat_id(_tag_cat_id)
@@ -171,4 +177,88 @@ class Query:
                 _ret.append(_conpany_id.comp_name_nm)
         return {"data":list(set(_ret))}
 
-# print(Query.get_company_name_by_tag_name(_tag_name_string="タグ_4"))
+    @staticmethod
+    def get_comp_data_by_comp_id(comp_name_id: int):
+        """
+        입력받은 comp_name_id 를 기준으로 comp_name 반환
+        """
+        _tags = []
+        _comp_name = CompanyName.query.filter_by(comp_name_id=comp_name_id).first().comp_name_nm
+        _comp_cat_id = Query.search_comp_cat_id_by_comp_name(_company_name=_comp_name).comp_cat_id
+        _tag_cat_id = Query.search_tag_cat_name_by_comp_cat_id(comp_cat_id=_comp_cat_id)
+
+        for _ in _tag_cat_id:
+            tag_name_id_list = Query.search_tag_id_by_tag_cat_id(_.tag_cat_id)
+            for _id in tag_name_id_list:
+                _tags.append(TagName.query.filter_by(tag_name_id=_id.tag_name_id).first().tag_name_nm)
+
+        _ret = {
+            "companyName": _comp_name,
+            "tags": _tags
+        }
+        return _ret
+
+    @staticmethod
+    def get_tag_data_by_tag_id(tag_name_id: int):
+        """
+        입력받은 tag_name_id 를 기준으로 Dict 반환
+        """
+        _tags = []
+        _tag_cat_id = Query.search_tag_cat_id_by_tag_name_id(tag_name_id)
+        _tag_id_list = Query.search_tag_id_by_tag_cat_id(tag_cat_id=_tag_cat_id)
+        for _ in _tag_id_list:
+            _tags.append(Query.search_tag_name_by_tag_id(tag_name_id=_.tag_name_id))
+
+        _ret = {
+            "tags": _tags
+        }
+        print(_ret)
+        return _ret
+
+    @staticmethod
+    def delete_tag_by_tag_name_n_comp_name(company_name: str, tag_name: str):
+        """
+        입력받은 company_name, tag_name을 기준으로 삭제
+        """
+        _tags = []
+        _company_cat_id = Query.search_comp_cat_id_by_comp_name(_company_name=company_name).comp_cat_id
+        _tag_cat_id = Query.search_tag_cat_id_by_tag_cat_nm(_tag_cat_nm=tag_name).tag_cat_id
+        _data = Mapped.query.filter_by(comp_cat_id=_company_cat_id, tag_cat_id=_tag_cat_id).all()
+        for _ in _data:
+            print(_.mapped_tb_id)
+            Mapped.query.filter_by(mapped_tb_id=_.mapped_tb_id).delete()
+        db.session.commit()
+
+    @staticmethod
+    def get_TF_by_tag_cat_id(comp_cat_id: int, tag_cat_id: int):
+        """
+        입력받은 문자를 기준으로 회사이름 찾기
+        """
+        _data = Mapped.query.filter_by(comp_cat_id=comp_cat_id, tag_cat_id=tag_cat_id).all()
+        return bool(_data)
+
+    @staticmethod
+    def get_all_company_name():
+        """
+        입력되어있는 모든회사의 이름을 리턴한다.
+        """
+        _ret = {
+            "company": []
+        }
+        for _data in CompanyCat.query.all():
+            _ret["company"].append(_data.comp_name_nm)
+        return _ret
+
+    @staticmethod
+    def get_all_tag_name():
+        """
+        입력되어있는 태그의 이름을 리턴한다.
+        """
+        _ret = {
+            "tag": []
+        }
+
+        for _ in TagName.query.join(TagNameCat, TagName.tag_name_id == TagNameCat.tag_name_id).all():
+            _ret["tag"].append(_.tag_name_nm)
+
+        return _ret
