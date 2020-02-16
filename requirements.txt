@@ -6,4 +6,4 @@ gunicorn
 gunicorn[gevent]
 psycopg2-binary
 flask-cors
-
+flask_restplus

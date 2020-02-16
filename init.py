@@ -92,9 +92,6 @@ class Batch:
         _Mapped_list = []
         _idx = 0
 
-        print(len(_company_names))
-        print(len(_company_names))
-
         while len(_tags) != _idx:
             _company_nm = _company_names[_idx]
             _tag_list = _tags[_idx].split("|")
@@ -107,7 +104,6 @@ class Batch:
                     _Mapped_list.append(Mapped(comp_cat_id=_comp_cat_id, tag_cat_id=_tag_cat_id))
 
             _idx += 1
-        print(_idx)
         db.session.add_all(_Mapped_list)
         db.session.commit()
 
