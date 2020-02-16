@@ -51,15 +51,14 @@ services:
       - ./Config:/config
       - ./:/start/
     ports:
-      - "5000:80"
+      - "80:80"
     environment:
       - DATABASEURI=postgresql://postgres:1234@db-postgres:5432/postgres?sslmode=disable
       - DBMS_PORT=5432
       - DBMS_ADDRESS=db-postgres
       - IS_STAND_ALONE=False
     command: 
-      - chmod +x /start/start.sh
-      - /start/start.sh
+    - apache2-custom.sh
 
     networks:
       - log-check

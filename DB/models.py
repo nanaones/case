@@ -1,7 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
-from app import db
-
-
 class CompanyName(db.Model):
     __tablename__ = 'WANT_COMP_NAME_TB'
     comp_name_id = db.Column('COMP_NAME_ID', db.Integer, primary_key=True)
