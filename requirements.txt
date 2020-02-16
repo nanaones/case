@@ -8,3 +8,4 @@ psycopg2-binary
 flask-cors
 flask_restplus
 flask_sqlalchemy
+gevent == 1.4

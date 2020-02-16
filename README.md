@@ -13,12 +13,13 @@
 
 ---
 
-### run 
+### How to start
 * standAlone  
 ```shell script
 $ python3 -m pip install -r requirements.txt
 $ python3 init.py
 $ gunicorn --access-logfile ./log/logaccess_log --error-logfile ./log/error_log -b 0.0.0.0:5000 -t 4 main:app
+
 ```
 
 * docker-compose
@@ -63,6 +64,25 @@ tagName 로 태그되어있는 모든 회사들을 리턴합니다.
 <id:int> 번째 회사의 tagName을 추가합니다.
 
 
+---
+## DB 
+
+### Docker Compose   
+![](/img/table.png)
 
 
+총 7개의 테이블로 구성되어있습니다.
 
+![](/img/table_detail.png)
+
+---
+
+## Tool Architecture Design
+
+### Docker - Compose
+
+1. python API Server
+2. PostgreSQL
+3. prometheus
+4. prometheus - exporter
+5. Grafana

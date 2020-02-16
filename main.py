@@ -1,15 +1,16 @@
 import json
 import os
-
+import models
 from flask import Flask, request, abort, Response
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 
 
+# TODO
 if not os.getenv("DATABASEURI") is None:
     _dbms_uri = os.getenv("DATABASEURI")
 else:
-    _dbms_uri = "postgresql://postgres:8015@localhost/postgres"
+    _dbms_uri = "postgresql://postgres:8015@localhost:5432/postgres?sslmode=disable"
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -51,9 +52,9 @@ def company_search():
         "data": []
     }
     try:
-        import DB
+        
         company_name = request.args.get("companyName").strip()
-        _company_list = DB.models.Query.get_comp_name_by_comp_name(company_name)
+        _company_list = models.Query.get_comp_name_by_comp_name(company_name)
         for _company in _company_list:
             ret["data"].append(_company.comp_name_nm)
         return json.dumps(ret)
@@ -72,9 +73,9 @@ def tag_search():
     """
 
     try:
-        import DB
+        
         tag_name = request.args.get("tagName").strip()
-        _data = DB.models.Query.get_company_name_by_tag_name(tag_name)
+        _data = models.Query.get_company_name_by_tag_name(tag_name)
         return json.dumps(_data)
     except AttributeError:
         abort(400)
@@ -88,8 +89,8 @@ def company():
     저장되어있는 모든 회사의 이름 리턴
     """
     try:
-        import DB
-        return json.dumps(DB.models.Query.get_all_company_name())
+        
+        return json.dumps(models.Query.get_all_company_name())
     except AttributeError:
         abort(400)
 
@@ -105,8 +106,8 @@ def company_get_by_id(id:int):
     """
 
     try:
-        import DB
-        _data = DB.models.Query.get_comp_data_by_comp_id(comp_name_id=id)
+        
+        _data = models.Query.get_comp_data_by_comp_id(comp_name_id=id)
         return json.dumps(_data)
     except AttributeError:
         abort(400)
@@ -119,8 +120,8 @@ def tag():
     저장되어있는 모든 tag의 이름 리턴
     """
     try:
-        import DB
-        return json.dumps(DB.models.Query.get_all_tag_name())
+        
+        return json.dumps(models.Query.get_all_tag_name())
     except AttributeError:
         abort(400)
 
@@ -136,8 +137,8 @@ def tag_get_by_id(id:int):
     """
 
     try:
-        import DB
-        _data = DB.models.Query.get_tag_data_by_tag_id(tag_name_id=id)
+        
+        _data = models.Query.get_tag_data_by_tag_id(tag_name_id=id)
         return json.dumps(_data)
     except AttributeError:
         abort(400)
@@ -156,17 +157,17 @@ def tag_add(id:int):
     """
 
     try:
-        import DB
+        
         tag_name = request.args.get("tagName").strip()
-        company_name = DB.models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
-        _company_cat_id = DB.models.Query.search_comp_cat_id_by_comp_name(_company_name=company_name).comp_cat_id
-        _tag_cat_id = DB.models.Query.search_tag_cat_id_by_tag_cat_nm(_tag_cat_nm=tag_name).tag_cat_id
-        _is_saved_data = DB.models.Query.get_TF_by_tag_cat_id(comp_cat_id=_company_cat_id, tag_cat_id=_tag_cat_id)
+        company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
+        _company_cat_id = models.Query.search_comp_cat_id_by_comp_name(_company_name=company_name).comp_cat_id
+        _tag_cat_id = models.Query.search_tag_cat_id_by_tag_cat_nm(_tag_cat_nm=tag_name).tag_cat_id
+        _is_saved_data = models.Query.get_TF_by_tag_cat_id(comp_cat_id=_company_cat_id, tag_cat_id=_tag_cat_id)
 
         if _is_saved_data:
             raise AttributeError
 
-        _mapped = DB.models.Mapped(comp_cat_id=_company_cat_id, tag_cat_id=_tag_cat_id)
+        _mapped = models.Mapped(comp_cat_id=_company_cat_id, tag_cat_id=_tag_cat_id)
         db.session.add(_mapped)
         db.session.commit()
         return Response( status=200, mimetype='application/json')
@@ -187,14 +188,16 @@ def tag_del(id:int):
     """
 
     try:
-        import DB
         tag_name = request.args.get("tagName").strip()
-        company_name = DB.models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
-        DB.models.Query.delete_tag_by_tag_name_n_comp_name(company_name= company_name, tag_name= tag_name)
+        company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
+        models.Query.delete_tag_by_tag_name_n_comp_name(company_name= company_name, tag_name= tag_name)
         return Response( status=200, mimetype='application/json')
     except AttributeError:
         abort(400)
 
 
+
 if __name__ == '__main__':
+
     app.run(host="0.0.0.0", port=8000, debug=True)
+    
