@@ -1,4 +1,5 @@
 from main import db
+
 class CompanyName(db.Model):
     __tablename__ = 'WANT_COMP_NAME_TB'
     comp_name_id = db.Column('COMP_NAME_ID', db.Integer, primary_key=True)
@@ -10,6 +11,7 @@ class CompanyName(db.Model):
 
     __table_args__ = {
         'autoload': True,
+        'schema': 'data',
         'autoload_with': db.engine
     }
 
@@ -24,6 +26,7 @@ class CompanyCat(db.Model):
         
     __table_args__ = {
         'autoload': True,
+        'schema': 'data',
         'autoload_with': db.engine
     }
 
@@ -40,6 +43,7 @@ class CompanyNameCat(db.Model):
 
     __table_args__ = {
         'autoload': True,
+        'schema': 'data',
         'autoload_with': db.engine
     }
 
@@ -55,6 +59,7 @@ class TagName(db.Model):
 
     __table_args__ = {
         'autoload': True,
+        'schema': 'data',
         'autoload_with': db.engine
     }
 
@@ -70,6 +75,7 @@ class TagCat(db.Model):
 
     __table_args__ = {
         'autoload': True,
+        'schema': 'data',
         'autoload_with': db.engine
     }
 
@@ -84,10 +90,6 @@ class TagNameCat(db.Model):
         self.tag_name_id = tag_name_id
         self.tag_cat_id = tag_cat_id
 
-    __table_args__ = {
-        'autoload': True,
-        'autoload_with': db.engine
-    }
 
 
 class Mapped(db.Model):
@@ -101,11 +103,6 @@ class Mapped(db.Model):
         self.comp_cat_id = comp_cat_id
         self.tag_cat_id = tag_cat_id
         
-    __table_args__ = {
-        'autoload': True,
-        'autoload_with': db.engine
-    }
-
 
 class Query:
     @staticmethod
@@ -215,6 +212,10 @@ class Query:
         _comp_cat_id = Query.search_comp_cat_id_by_comp_name(_company_name=_comp_name).comp_cat_id
         _tag_cat_id = Query.search_tag_cat_name_by_comp_cat_id(comp_cat_id=_comp_cat_id)
 
+        print(_comp_name)
+        print(_comp_cat_id)
+        print(_tag_cat_id)
+        
         for _ in _tag_cat_id:
             tag_name_id_list = Query.search_tag_id_by_tag_cat_id(_.tag_cat_id)
             for _id in tag_name_id_list:
@@ -275,6 +276,8 @@ class Query:
         }
         for _data in CompanyCat.query.all():
             _ret["company"].append(_data.comp_name_nm)
+            print(_)
+
         return _ret
 
     @staticmethod
@@ -290,3 +293,5 @@ class Query:
             _ret["tag"].append(_.tag_name_nm)
 
         return _ret
+    
+get_comp_data_by_comp_id(1)

@@ -7,14 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 # TODO
-# if not os.getenv("DATABASEURI") is None:
-#     _dbms_uri = os.getenv("DATABASEURI")
-# else:
-#     _dbms_uri = "postgresql://postgres:8015@localhost/postgres"
+if not os.getenv("DATABASEURI") is None:
+    _dbms_uri = os.getenv("DATABASEURI")
+else:
+    _dbms_uri = "postgresql://postgres:1234@localhost/postgres"
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = _dbms_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -189,7 +189,7 @@ def tag_del(id:int):
     """
 
     try:
-        import DB
+        import DB.models
         tag_name = request.args.get("tagName").strip()
         company_name = DB.models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
         DB.models.Query.delete_tag_by_tag_name_n_comp_name(company_name= company_name, tag_name= tag_name)
@@ -198,5 +198,8 @@ def tag_del(id:int):
         abort(400)
 
 
+
 if __name__ == '__main__':
+
     app.run(host="0.0.0.0", port=8000, debug=True)
+    

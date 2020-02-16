@@ -1,7 +1,7 @@
 from Batch.CSV import CSV
 import unittest
 import re
-from DB.models import Query
+from models import Query
 
 
 class TestCustom(unittest.TestCase):

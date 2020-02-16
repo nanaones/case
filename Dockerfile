@@ -8,5 +8,4 @@ COPY . /app
 WORKDIR /app
 
 RUN pip3 install -r requirements.txt
-RUN python3 init.py
-CMD ["gunicorn", "-b 0.0.0.0:5000", "-k gevent", "src.runner:app"]
+CMD ["gunicorn", "-b 0.0.0.0:5000", "-k gevent", "main:app"]

@@ -53,12 +53,10 @@ services:
     ports:
       - "80:80"
     environment:
-      - DATABASEURI=postgresql://postgres:1234@localhost:5432/postgres
+      - DATABASEURI=postgresql://postgres:1234@db-postgres:5432/postgres
       - DBMS_PORT=5432
       - DBMS_ADDRESS=db-postgres
       - IS_STAND_ALONE=false
-    command: 
-    - ./start.sh
     networks:
       - log-check
 

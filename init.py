@@ -1,4 +1,4 @@
-from DB.models import TagName, TagCat, TagNameCat, CompanyName, CompanyCat, CompanyNameCat, Mapped, Query
+from models import TagName, TagCat, TagNameCat, CompanyName, CompanyCat, CompanyNameCat, Mapped, Query
 from Batch.CSV import CSV
 from main import db
 
