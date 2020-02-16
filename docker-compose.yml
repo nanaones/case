@@ -53,13 +53,12 @@ services:
     ports:
       - "80:80"
     environment:
-      - DATABASEURI=postgresql://postgres:1234@db-postgres:5432/postgres?sslmode=disable
+      - DATABASEURI=postgresql://postgres:1234@localhost:5432/postgres
       - DBMS_PORT=5432
       - DBMS_ADDRESS=db-postgres
-      - IS_STAND_ALONE=False
+      - IS_STAND_ALONE=false
     command: 
-    - apache2-custom.sh
-
+    - ./start.sh
     networks:
       - log-check
 

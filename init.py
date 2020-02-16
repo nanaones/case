@@ -1,6 +1,6 @@
-from DB.models import db, TagName, TagCat, TagNameCat, CompanyName, CompanyCat, CompanyNameCat, Mapped, Query
+from DB.models import TagName, TagCat, TagNameCat, CompanyName, CompanyCat, CompanyNameCat, Mapped, Query
 from Batch.CSV import CSV
-
+from main import db
 
 class Batch:
     """
@@ -17,6 +17,7 @@ class Batch:
         param:None
         return:None
         """
+        
         tag_cat_nm = [TagCat(tag_cat_id=_tag[0]+1, tag_cat_nm=_tag[1])for _tag in enumerate(self.base_tag)]
         tag_name_nm = [TagName(tag_name_id=_tag[0]+1, tag_name_nm=_tag[1])for _tag in enumerate(self.total_tag)]
         tag_name_cat = [TagNameCat(tag_name_id=_tag[1], tag_cat_id=_tag[0])for _tag in self.zipped]

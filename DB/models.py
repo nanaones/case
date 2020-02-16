@@ -1,3 +1,4 @@
+from main import db
 class CompanyName(db.Model):
     __tablename__ = 'WANT_COMP_NAME_TB'
     comp_name_id = db.Column('COMP_NAME_ID', db.Integer, primary_key=True)
@@ -7,6 +8,10 @@ class CompanyName(db.Model):
         self.comp_name_id = comp_name_id
         self.comp_name_nm = comp_name_nm
 
+    __table_args__ = {
+        'autoload': True,
+        'autoload_with': db.engine
+    }
 
 class CompanyCat(db.Model):
     __tablename__ = 'WANT_COMP_CAT_TB'
@@ -17,8 +22,10 @@ class CompanyCat(db.Model):
         self.comp_cat_id = comp_cat_id
         self.comp_name_nm = comp_name_nm
         
-    def as_dict(self):
-        return {x.name: getattr(self, x.name) for x in self.__table__.columns}
+    __table_args__ = {
+        'autoload': True,
+        'autoload_with': db.engine
+    }
 
 
 class CompanyNameCat(db.Model):
@@ -31,6 +38,11 @@ class CompanyNameCat(db.Model):
         self.comp_name_id = comp_name_id
         self.comp_cat_id = comp_cat_id
 
+    __table_args__ = {
+        'autoload': True,
+        'autoload_with': db.engine
+    }
+
 
 class TagName(db.Model):
     __tablename__ = 'WANT_TAG_NAME_TB'
@@ -40,6 +52,11 @@ class TagName(db.Model):
     def __init__(self, tag_name_id, tag_name_nm):
         self.tag_name_id = tag_name_id
         self.tag_name_nm = tag_name_nm
+
+    __table_args__ = {
+        'autoload': True,
+        'autoload_with': db.engine
+    }
 
 
 class TagCat(db.Model):
@@ -51,6 +68,11 @@ class TagCat(db.Model):
         self.tag_cat_id = tag_cat_id
         self.tag_cat_nm = tag_cat_nm
 
+    __table_args__ = {
+        'autoload': True,
+        'autoload_with': db.engine
+    }
+
 
 class TagNameCat(db.Model):
     __tablename__ = 'WANT_TAG_NAME_CAT_TB'
@@ -61,6 +83,11 @@ class TagNameCat(db.Model):
     def __init__(self, tag_name_id, tag_cat_id ):
         self.tag_name_id = tag_name_id
         self.tag_cat_id = tag_cat_id
+
+    __table_args__ = {
+        'autoload': True,
+        'autoload_with': db.engine
+    }
 
 
 class Mapped(db.Model):
@@ -74,6 +101,11 @@ class Mapped(db.Model):
         self.comp_cat_id = comp_cat_id
         self.tag_cat_id = tag_cat_id
         
+    __table_args__ = {
+        'autoload': True,
+        'autoload_with': db.engine
+    }
+
 
 class Query:
     @staticmethod
