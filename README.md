@@ -15,6 +15,8 @@
 
 ### How to start
 * standAlone  
+별도 DB가 없으므로 Docker-compose 로 실행을 권장합니다.
+
 ```shell script
 $ python3 -m pip install -r requirements.txt
 $ python3 init.py
