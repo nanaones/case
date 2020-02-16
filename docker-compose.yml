@@ -50,8 +50,6 @@ services:
       - ./log:/logs
       - ./Config:/config
       - ./Docker:/start
-    depends_on:
-      - db-postgres
     ports:
       - "5000:5000"
     environment:
