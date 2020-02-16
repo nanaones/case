@@ -17,17 +17,14 @@
 * standAlone  
 ```shell script
 $ python3 -m pip install -r requirements.txt
-$ gunicorn --access-logfile  &&\
-         ./log/logaccess_log --error-logfile &&\
-         ./log/error_log -b 0.0.0.0:5000  &&\
-         app:app  &&\
-         -w 2 --thread 4 -k gevent &
+$ python3 init.py
+$ gunicorn --access-logfile ./log/logaccess_log --error-logfile ./log/error_log -b 0.0.0.0:5000 -t 4 main:app
 ```
 
 * docker-compose
 
 ```shell script
-TBD
+$ docker-compose up --build
 
 ```
 
