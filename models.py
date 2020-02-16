@@ -9,11 +9,6 @@ class CompanyName(db.Model):
         self.comp_name_id = comp_name_id
         self.comp_name_nm = comp_name_nm
 
-    __table_args__ = {
-        'autoload': True,
-        'schema': 'data',
-        'autoload_with': db.engine
-    }
 
 class CompanyCat(db.Model):
     __tablename__ = 'WANT_COMP_CAT_TB'
@@ -23,12 +18,7 @@ class CompanyCat(db.Model):
     def __init__(self, comp_cat_id, comp_name_nm):
         self.comp_cat_id = comp_cat_id
         self.comp_name_nm = comp_name_nm
-        
-    __table_args__ = {
-        'autoload': True,
-        'schema': 'data',
-        'autoload_with': db.engine
-    }
+
 
 
 class CompanyNameCat(db.Model):
@@ -41,12 +31,6 @@ class CompanyNameCat(db.Model):
         self.comp_name_id = comp_name_id
         self.comp_cat_id = comp_cat_id
 
-    __table_args__ = {
-        'autoload': True,
-        'schema': 'data',
-        'autoload_with': db.engine
-    }
-
 
 class TagName(db.Model):
     __tablename__ = 'WANT_TAG_NAME_TB'
@@ -57,11 +41,6 @@ class TagName(db.Model):
         self.tag_name_id = tag_name_id
         self.tag_name_nm = tag_name_nm
 
-    __table_args__ = {
-        'autoload': True,
-        'schema': 'data',
-        'autoload_with': db.engine
-    }
 
 
 class TagCat(db.Model):
@@ -73,13 +52,6 @@ class TagCat(db.Model):
         self.tag_cat_id = tag_cat_id
         self.tag_cat_nm = tag_cat_nm
 
-    __table_args__ = {
-        'autoload': True,
-        'schema': 'data',
-        'autoload_with': db.engine
-    }
-
-
 class TagNameCat(db.Model):
     __tablename__ = 'WANT_TAG_NAME_CAT_TB'
     tag_name_cat_id = db.Column('TAG_NAME_CAT_ID', db.Integer,  primary_key=True)
@@ -89,7 +61,6 @@ class TagNameCat(db.Model):
     def __init__(self, tag_name_id, tag_cat_id ):
         self.tag_name_id = tag_name_id
         self.tag_cat_id = tag_cat_id
-
 
 
 class Mapped(db.Model):
@@ -294,4 +265,3 @@ class Query:
 
         return _ret
     
-get_comp_data_by_comp_id(1)

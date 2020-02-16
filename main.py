@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 if not os.getenv("DATABASEURI") is None:
     _dbms_uri = os.getenv("DATABASEURI")
 else:
-    _dbms_uri = "postgresql://postgres:1234@localhost/postgres"
+    _dbms_uri = "postgresql://postgres:8015@localhost:5432/postgres?sslmode=disable"
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
