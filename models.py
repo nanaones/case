@@ -208,7 +208,6 @@ class Query:
         _ret = {
             "tags": _tags
         }
-        print(_ret)
         return _ret
 
     @staticmethod
@@ -221,7 +220,6 @@ class Query:
         _tag_cat_id = Query.search_tag_cat_id_by_tag_cat_nm(_tag_cat_nm=tag_name).tag_cat_id
         _data = Mapped.query.filter_by(comp_cat_id=_company_cat_id, tag_cat_id=_tag_cat_id).all()
         for _ in _data:
-            print(_.mapped_tb_id)
             Mapped.query.filter_by(mapped_tb_id=_.mapped_tb_id).delete()
         db.session.commit()
 
@@ -243,7 +241,6 @@ class Query:
         }
         for _data in CompanyCat.query.all():
             _ret["company"].append(_data.comp_name_nm)
-            print(_)
 
         return _ret
 
