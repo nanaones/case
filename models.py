@@ -182,10 +182,6 @@ class Query:
         _comp_name = CompanyName.query.filter_by(comp_name_id=comp_name_id).first().comp_name_nm
         _comp_cat_id = Query.search_comp_cat_id_by_comp_name(_company_name=_comp_name).comp_cat_id
         _tag_cat_id = Query.search_tag_cat_name_by_comp_cat_id(comp_cat_id=_comp_cat_id)
-
-        print(_comp_name)
-        print(_comp_cat_id)
-        print(_tag_cat_id)
         
         for _ in _tag_cat_id:
             tag_name_id_list = Query.search_tag_id_by_tag_cat_id(_.tag_cat_id)
