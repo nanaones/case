@@ -57,7 +57,7 @@ def company_search():
         _company_list = models.Query.get_comp_name_by_comp_name(company_name)
         for _company in _company_list:
             ret["data"].append(_company.comp_name_nm)
-        return json.dumps(ret)
+        return json.dumps(ret, ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -76,7 +76,7 @@ def tag_search():
         import models
         tag_name = request.args.get("tagName").strip()
         _data = models.Query.get_company_name_by_tag_name(tag_name)
-        return json.dumps(_data)
+        return json.dumps(_data, ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -90,7 +90,7 @@ def company():
     """
     try:
         import models
-        return json.dumps(models.Query.get_all_company_name())
+        return json.dumps(models.Query.get_all_company_name(), ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -108,7 +108,7 @@ def company_get_by_id(id:int):
     try:
         import models
         _data = models.Query.get_comp_data_by_comp_id(comp_name_id=id)
-        return json.dumps(_data)
+        return json.dumps(_data, ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -121,7 +121,7 @@ def tag():
     """
     try:
         import models
-        return json.dumps(models.Query.get_all_tag_name())
+        return json.dumps(models.Query.get_all_tag_name(), ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -139,7 +139,7 @@ def tag_get_by_id(id:int):
     try:
         import models
         _data = models.Query.get_tag_data_by_tag_id(tag_name_id=id)
-        return json.dumps(_data)
+        return json.dumps(_data, ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -195,6 +195,7 @@ def tag_del(id:int):
         return Response( status=200, mimetype='application/json')
     except AttributeError:
         abort(400)
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8000, debug=True)
