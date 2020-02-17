@@ -15,20 +15,23 @@
 
 ### How to start
 * standAlone  
-별도 DB가 없으므로 Docker-compose 로 실행을 권장합니다.
+
+별도 실행하실경우 DB가 필요합니다.
+PostgreSQL 기준의 table create SQL 쿼리문이 [ 여기있습니다. ](https://github.com/nanaones/case/blob/master/Batch/Query/InitialQuery.sql)
+DB가 설정되었으면, 초기 데이터 삽입을 위해서 [init.py](https://github.com/nanaones/case/blob/master/init.py)를 실행합니다. 
+
+1. DB설정 
+2. `python3 init.py`
 
 ```shell script
 $ python3 -m pip install -r requirements.txt
-$ python3 init.py
 $ gunicorn --access-logfile ./log/logaccess_log --error-logfile ./log/error_log -b 0.0.0.0:80 -t 4 main:app
-
 ```
 
 * docker-compose
 
 ```shell script
 $ docker-compose up --build
-
 ```
 
 * test
