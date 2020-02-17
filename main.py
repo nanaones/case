@@ -1,6 +1,6 @@
 import json
 import os
-import models
+
 from flask import Flask, request, abort, Response
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
@@ -52,7 +52,7 @@ def company_search():
         "data": []
     }
     try:
-        
+        import models
         company_name = request.args.get("companyName").strip()
         _company_list = models.Query.get_comp_name_by_comp_name(company_name)
         for _company in _company_list:
@@ -73,7 +73,7 @@ def tag_search():
     """
 
     try:
-        
+        import models
         tag_name = request.args.get("tagName").strip()
         _data = models.Query.get_company_name_by_tag_name(tag_name)
         return json.dumps(_data)
@@ -89,7 +89,7 @@ def company():
     저장되어있는 모든 회사의 이름 리턴
     """
     try:
-        
+        import models
         return json.dumps(models.Query.get_all_company_name())
     except AttributeError:
         abort(400)
@@ -106,7 +106,7 @@ def company_get_by_id(id:int):
     """
 
     try:
-        
+        import models
         _data = models.Query.get_comp_data_by_comp_id(comp_name_id=id)
         return json.dumps(_data)
     except AttributeError:
@@ -120,7 +120,7 @@ def tag():
     저장되어있는 모든 tag의 이름 리턴
     """
     try:
-        
+        import models
         return json.dumps(models.Query.get_all_tag_name())
     except AttributeError:
         abort(400)
@@ -137,7 +137,7 @@ def tag_get_by_id(id:int):
     """
 
     try:
-        
+        import models
         _data = models.Query.get_tag_data_by_tag_id(tag_name_id=id)
         return json.dumps(_data)
     except AttributeError:
@@ -157,7 +157,7 @@ def tag_add(id:int):
     """
 
     try:
-        
+        import models
         tag_name = request.args.get("tagName").strip()
         company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
         _company_cat_id = models.Query.search_comp_cat_id_by_comp_name(_company_name=company_name).comp_cat_id
@@ -188,6 +188,7 @@ def tag_del(id:int):
     """
 
     try:
+        import models
         tag_name = request.args.get("tagName").strip()
         company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
         models.Query.delete_tag_by_tag_name_n_comp_name(company_name= company_name, tag_name= tag_name)
@@ -195,9 +196,5 @@ def tag_del(id:int):
     except AttributeError:
         abort(400)
 
-
-
 if __name__ == '__main__':
-
     app.run(host="0.0.0.0", port=8000, debug=True)
-    
