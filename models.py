@@ -74,7 +74,7 @@ class Mapped(db.Model):
         self.comp_cat_id = comp_cat_id
         self.tag_cat_id = tag_cat_id
         
-
+# TODO: O(N^2)의 안좋은 복잡도를 가지고있는 메서드 모두 수정
 class Query:
     @staticmethod
     def search_comp_cat_id_by_comp_name(_company_name: str):
@@ -171,7 +171,7 @@ class Query:
             _company_id_list = Query.search_company_name_by_comp_cat_id(comp_cat_id=_company.comp_cat_id)
             for _conpany_id in _company_id_list:
                 _ret.append(_conpany_id.comp_name_nm)
-        return {"data":list(set(_ret))}
+        return {"data": list(set(_ret))}
 
     @staticmethod
     def get_comp_data_by_comp_id(comp_name_id: int):
@@ -257,4 +257,3 @@ class Query:
             _ret["tag"].append(_.tag_name_nm)
 
         return _ret
-    
