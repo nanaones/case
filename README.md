@@ -21,7 +21,9 @@ PostgreSQL 기준의 table create SQL 쿼리문이 [ 여기있습니다. ](https
 DB가 설정되었으면, 초기 데이터 삽입을 위해서 [init.py](https://github.com/nanaones/case/blob/master/init.py)를 실행합니다. 
 
 1. DB설정 
-2. `python3 init.py`
+2. `python3 -m pip install -r requirements.txt`
+3. `python3 init.py`
+4. gunicorn start
 
 ```shell script
 $ python3 -m pip install -r requirements.txt
@@ -107,4 +109,9 @@ http://localhost:80/company/(id:int)?tagName=(str)
 3. prometheus
 4. prometheus - exporter [PostgreSQL]
 5. Grafana
+
+### TODO list:
+./models.py Flask-sqlAlchemy 사용 쿼리 최적화
+./main.py   중복값 리턴 API 쿼리 수정
+
 

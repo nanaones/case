@@ -6,7 +6,6 @@ from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 
 
-# TODO
 if not os.getenv("DATABASEURI") is None:
     _dbms_uri = os.getenv("DATABASEURI")
 else:
@@ -57,7 +56,7 @@ def company_search():
         _company_list = models.Query.get_comp_name_by_comp_name(company_name)
         for _company in _company_list:
             ret["data"].append(_company.comp_name_nm)
-        return json.dumps(ret)
+        return json.dumps(ret, ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -76,7 +75,7 @@ def tag_search():
         import models
         tag_name = request.args.get("tagName").strip()
         _data = models.Query.get_company_name_by_tag_name(tag_name)
-        return json.dumps(_data)
+        return json.dumps(_data, ensure_ascii=False)
     except AttributeError:
         abort(400)
 
@@ -90,14 +89,17 @@ def company():
     """
     try:
         import models
-        return json.dumps(models.Query.get_all_company_name())
+        return json.dumps(models.Query.get_all_company_name(), ensure_ascii=False)
     except AttributeError:
         abort(400)
 
 
-@app.route("/company/<int:id>", methods=["GET"])
+#  TODO: 회사 id로 검색을 수행했을때, Tag 이름이 중복되어 표출.
+
+
+@app.route("/company/<int:_id>", methods=["GET"])
 @cross_origin()
-def company_get_by_id(id:int):
+def company_get_by_id(_id: int):
     """
     GET HTTP METHOD
     URI 에 해당하는 회사의 종류 리턴
@@ -107,10 +109,12 @@ def company_get_by_id(id:int):
 
     try:
         import models
-        _data = models.Query.get_comp_data_by_comp_id(comp_name_id=id)
+        _data = models.Query.get_comp_data_by_comp_id(comp_name_id=_id)
+        return json.dumps(_data, ensure_ascii=False)
         return json.dumps(_data)
     except AttributeError:
         abort(400)
+
 
 @app.route("/tag", methods=["GET"])
 @cross_origin()
@@ -121,14 +125,14 @@ def tag():
     """
     try:
         import models
-        return json.dumps(models.Query.get_all_tag_name())
+        return json.dumps(models.Query.get_all_tag_name(), ensure_ascii=False)
     except AttributeError:
         abort(400)
 
 
-@app.route("/tag/<int:id>", methods=["GET"])
+@app.route("/tag/<int:_id>", methods=["GET"])
 @cross_origin()
-def tag_get_by_id(id:int):
+def tag_get_by_id(_id: int):
     """
     GET HTTP METHOD
     URI 에 해당하는 태그의 종류 리턴
@@ -138,15 +142,15 @@ def tag_get_by_id(id:int):
 
     try:
         import models
-        _data = models.Query.get_tag_data_by_tag_id(tag_name_id=id)
-        return json.dumps(_data)
+        _data = models.Query.get_tag_data_by_tag_id(tag_name_id=_id)
+        return json.dumps(_data, ensure_ascii=False)
     except AttributeError:
         abort(400)
 
 
-@app.route("/company/<int:id>", methods=["POST"])
+@app.route("/company/<int:_id>", methods=["POST"])
 @cross_origin()
-def tag_add(id:int):
+def tag_add(_id:int):
     """
     POST HTTP METHOD
     URI 에 해당하는 회사에 TAG_NAME 을 파라미터로 받은 후, 해당 파라미터에 대한 삽입 진행
@@ -159,7 +163,7 @@ def tag_add(id:int):
     try:
         import models
         tag_name = request.args.get("tagName").strip()
-        company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
+        company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=_id)
         _company_cat_id = models.Query.search_comp_cat_id_by_comp_name(_company_name=company_name).comp_cat_id
         _tag_cat_id = models.Query.search_tag_cat_id_by_tag_cat_nm(_tag_cat_nm=tag_name).tag_cat_id
         _is_saved_data = models.Query.get_TF_by_tag_cat_id(comp_cat_id=_company_cat_id, tag_cat_id=_tag_cat_id)
@@ -176,9 +180,9 @@ def tag_add(id:int):
         abort(400)
 
 
-@app.route("/company/<int:id>", methods=["DELETE"])
+@app.route("/company/<int:_id>", methods=["DELETE"])
 @cross_origin()
-def tag_del(id:int):
+def tag_del(_id: int):
     """
     DELETE HTTP METHOD
     URI 에 해당하는 회사에 TAG_NAME 을 파라미터로 받은 후, 해당 파라미터에 대한 삭제 진행
@@ -190,11 +194,12 @@ def tag_del(id:int):
     try:
         import models
         tag_name = request.args.get("tagName").strip()
-        company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=id)
+        company_name = models.Query.search_comp_name_by_comp_name_id(comp_name_id=_id)
         models.Query.delete_tag_by_tag_name_n_comp_name(company_name= company_name, tag_name= tag_name)
         return Response( status=200, mimetype='application/json')
     except AttributeError:
         abort(400)
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8000, debug=True)
