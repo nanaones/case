@@ -110,3 +110,9 @@ http://localhost:80/company/(id:int)?tagName=(str)
 4. prometheus - exporter [PostgreSQL]
 5. Grafana
 
+###
+TODO:
+./models.py Flask-sqlAlchemy 사용 쿼리 최적화
+./main.py   중복값 리턴 API 쿼리 수정
+
+

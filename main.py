@@ -110,7 +110,7 @@ def company_get_by_id(_id: int):
     try:
         import models
         _data = models.Query.get_comp_data_by_comp_id(comp_name_id=_id)
-        # return json.dumps(_data, ensure_ascii=False)
+        return json.dumps(_data, ensure_ascii=False)
         return json.dumps(_data)
     except AttributeError:
         abort(400)
