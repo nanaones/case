@@ -1,5 +1,6 @@
 from main import db
 
+
 class CompanyName(db.Model):
     __tablename__ = 'WANT_COMP_NAME_TB'
     comp_name_id = db.Column('COMP_NAME_ID', db.Integer, primary_key=True)
@@ -73,7 +74,8 @@ class Mapped(db.Model):
         self.mapped_tb_id
         self.comp_cat_id = comp_cat_id
         self.tag_cat_id = tag_cat_id
-        
+
+
 # TODO: O(N^2)의 안좋은 복잡도를 가지고있는 메서드 모두 수정
 class Query:
     @staticmethod
@@ -164,13 +166,14 @@ class Query:
 
         _ret = []
         _tag_id = Query.search_tag_id_by_tag_name(_tag_name_string)
+        print(_tag_id, "_tag_id")
         _tag_cat_id = Query.search_tag_cat_id_by_tag_name_id(_tag_id)
         _comp_list = Query.search_company_cat_by_tag_cat_id(_tag_cat_id)
 
         for _company in _comp_list:
             _company_id_list = Query.search_company_name_by_comp_cat_id(comp_cat_id=_company.comp_cat_id)
-            for _conpany_id in _company_id_list:
-                _ret.append(_conpany_id.comp_name_nm)
+            for _company_id in _company_id_list:
+                _ret.append(_company_id.comp_name_nm)
         return {"data": list(set(_ret))}
 
     @staticmethod
