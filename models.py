@@ -21,7 +21,6 @@ class CompanyCat(db.Model):
         self.comp_name_nm = comp_name_nm
 
 
-
 class CompanyNameCat(db.Model):
     __tablename__ = 'WANT_COMP_NAME_CAT_TB'
     comp_name_cat_id = db.Column('COMP_NAME_CAT_ID', db.Integer, primary_key=True)
@@ -74,6 +73,38 @@ class Mapped(db.Model):
         self.mapped_tb_id
         self.comp_cat_id = comp_cat_id
         self.tag_cat_id = tag_cat_id
+
+#
+#  TODO: Complate
+# class CompNameMapped:
+#     """
+#     WANT_COMP_NAME_CAT_TB 기준으로 회사이름과 회사의 카테고리명, 카테고리 ID를 가진 테이블 구현체
+#     SELECT *
+#     FROM public."WANT_COMP_CAT_TB" AS TAG_TB
+#     LEFT JOIN public."WANT_COMP_NAME_CAT_TB" AS MAP_TB
+#     ON TAG_TB."COMP_CAT_ID" = MAP_TB."COMP_CAT_ID"
+#     LEFT JOIN public."WANT_COMP_NAME_TB" AS NAME_TB
+#     ON MAP_TB."COMP_NAME_ID" = NAME_TB."COMP_NAME_ID"
+#     """
+#
+#     def __init__(self):
+#         self.view = db.session.query(CompanyNameCat)\
+#                                             .join(CompanyCat, CompanyNameCat.comp_cat_id == CompanyCat.comp_cat_id)\
+#                                             .join(CompanyName, CompanyNameCat.comp_name_id == CompanyName.comp_name_id)\
+#                                             .all()
+#         print(self.view)
+#
+#         for _ in self.view:
+#             print(_.__dict__, "tag_name_id")
+#             print(_.comp_name_id, "tag_name_id")
+#             print(_.comp_cat_id, "tag_name_id")
+#
+#         print(self.view.__dict__, "tag_name_id")
+#
+#
+#     def search_company_name_by_txt(self, _in_str: str):
+#         print(_in_str)
+#
 
 
 # TODO: O(N^2)의 안좋은 복잡도를 가지고있는 메서드 모두 수정
@@ -166,7 +197,6 @@ class Query:
 
         _ret = []
         _tag_id = Query.search_tag_id_by_tag_name(_tag_name_string)
-        print(_tag_id, "_tag_id")
         _tag_cat_id = Query.search_tag_cat_id_by_tag_name_id(_tag_id)
         _comp_list = Query.search_company_cat_by_tag_cat_id(_tag_cat_id)
 
@@ -260,3 +290,6 @@ class Query:
             _ret["tag"].append(_.tag_name_nm)
 
         return _ret
+
+
+c = CompNameMapped()
