@@ -1,5 +1,4 @@
 from main import db
-from sqlalchemy.orm import relationship, backref
 
 
 class CompanyName(db.Model):
@@ -27,8 +26,8 @@ class CompanyNameCat(db.Model):
     comp_name_cat_id = db.Column('COMP_NAME_CAT_ID', db.Integer, primary_key=True)
     comp_name_id = db.Column("COMP_NAME_ID", db.ForeignKey("WANT_COMP_NAME_TB.COMP_NAME_ID"))
     comp_cat_id = db.Column("COMP_CAT_ID", db.ForeignKey("WANT_COMP_CAT_TB.COMP_CAT_ID"))
-    company_name = db.relationship("WANT_COMP_NAME_TB")
-    company_cat = db.relationship("WANT_COMP_CAT_TB")
+    company_name = db.relationship(CompanyName)
+    company_cat = db.relationship(CompanyCat)
 
     def __init__(self, comp_name_id, comp_cat_id ):
         self.comp_name_id = comp_name_id
@@ -60,8 +59,8 @@ class TagNameCat(db.Model):
     tag_name_cat_id = db.Column('TAG_NAME_CAT_ID', db.Integer,  primary_key=True)
     tag_name_id = db.Column("TAG_NAME_ID", db.Integer, db.ForeignKey("WANT_TAG_NAME_TB.TAG_NAME_ID"))
     tag_cat_id = db.Column("TAG_CAT_ID", db.Integer, db.ForeignKey("WANT_TAG_CAT_TB.TAG_CAT_ID"))
-    TagName = db.relationship("WANT_TAG_NAME_TB")
-    TagCat = db.relationship("WANT_TAG_CAT_TB")
+    TagName = db.relationship(TagName)
+    TagCat = db.relationship(TagCat)
 
     def __init__(self, tag_name_id, tag_cat_id ):
         self.tag_name_id = tag_name_id
@@ -73,8 +72,8 @@ class Mapped(db.Model):
     mapped_tb_id = db.Column('MAPPED_TB_ID', db.Integer, primary_key=True)
     comp_cat_id = db.Column("COMP_CAT_ID", db.ForeignKey("WANT_COMP_CAT_TB.COMP_CAT_ID"))
     tag_cat_id = db.Column("TAG_CAT_ID", db.ForeignKey("WANT_TAG_CAT_TB.TAG_CAT_ID"))
-    company_cat = db.relationship("WANT_COMP_CAT_TB")
-    tag_cat = db.relationship("WANT_TAG_CAT_TB")
+    company_cat = db.relationship(CompanyCat)
+    tag_cat = db.relationship(TagCat)
     
     def __init__(self, comp_cat_id, tag_cat_id):
         self.mapped_tb_id
@@ -297,7 +296,3 @@ class Query:
             _ret["tag"].append(_.tag_name_nm)
 
         return _ret
-
-
-db.create_all()
-
