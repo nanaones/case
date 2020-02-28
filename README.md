@@ -113,5 +113,3 @@ http://localhost:80/company/(id:int)?tagName=(str)
 ### TODO list:
 ./models.py Flask-sqlAlchemy 사용 쿼리 최적화  
 ./main.py   중복값 리턴 API 쿼리 수정
-
-

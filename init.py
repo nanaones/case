@@ -125,6 +125,7 @@ class Batch:
 
 
 if __name__ == '__main__':
+    db.create_all()
     B = Batch()
     B.init_db()
 
